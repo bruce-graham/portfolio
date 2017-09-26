@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { Switch, Route } from 'react-router-dom';
+import Footer from './Footer.jsx';
+import Header from './Header.jsx';
+import Main from './Main.jsx';
 
-class App extends Component {
-  constructor() {
-    super()
-  }
+const App = () => {
+  return (
+    <div>
+      <Header />
+      <Main />
+      <Footer />
+    </div>
+  );
+};
 
-  render() {
-
-  }
-}
-
-ReactDOM.render('<App />', document.querySelector('#container'));
+export default App;

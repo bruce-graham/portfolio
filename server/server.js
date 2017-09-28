@@ -1,8 +1,13 @@
 const express = require('express');
-const app = express();
+const path = require('path');
 const apiHelpers = require('./apiHelpers.js');
+const app = express();
 
 app.use(express.static('public'));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
+});
 
 app.get('/api/photos/', (req, res) => {
   apiHelpers.getInstagramPhotos(data => {

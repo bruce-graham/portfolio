@@ -1,17 +1,25 @@
-import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import Footer from './Footer.jsx';
-import Header from './Header.jsx';
-import Main from './Main.jsx';
+import Navbar from './Navbar.jsx';
+import Routing from './Routing.jsx';
 
-const App = () => {
-  return (
-    <div>
-      <Header />
-      <Main />
-      <Footer />
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+  };
+
+  render() {
+    return (
+        <BrowserRouter>
+          <div>
+            <Navbar />
+            <Routing />
+            <Footer />
+          </div>
+        </BrowserRouter>
+    );
+  };
 };
 
 export default App;

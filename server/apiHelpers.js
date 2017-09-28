@@ -16,7 +16,7 @@ module.exports = {
       let json = JSON.stringify(data, circular());
       let restoredObj = JSON.parse(json);
 
-      callback(restoredObj.data.data)
+      callback(restoredObj.data.data);
     })
     .catch(err => {
       callback(err);

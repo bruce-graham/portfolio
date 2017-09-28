@@ -1,39 +1,39 @@
 import React from 'react';
+import Loader from 'react-loader';
 import Axios from 'axios';
-import Loading from'./Loading.jsx';
+import Photo from './Photo.jsx';
+import Header from './Header.jsx';
 
 class Gallery extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      loading: true,
-      photos: []
-    }
+      loaded: false,
+      photos: [],
+      title: 'Photo Gallery',
+      description: 'Hello, thank you for viewing my photography.  Click on any photo below and it will link you directly to my Instagram profile.'
+    };
   };
 
   componentDidMount() {
+    let photoData = [];
+
     Axios.get('/api/photos/')
       .then(response => {
-        let photoData = response.data.map(imageData => {
+        photoData = response.data.map(imageData => {
           return (
-            <div class="s-12 m-6 l-4">
-              <div class="image-with-hover-overlay image-hover-zoom margin-bottom">
-                <a target="_blank" href={ imageData.link }>
-                <div class="image-hover-overlay background-primary">
-                  <div class="image-hover-overlay-content text-center padding-2x">
-                    <p>Quote: { imageData.caption.text }</p>
-                  </div>
-                </div>
-                <img src={ imageData.images.standard_resolution.url } alt="" title="Photography" />
-
-              </a>
-
-              </div>
-            </div>
-            );
+            <Photo
+              link={imageData.link}
+              text={imageData.caption.text}
+              url={imageData.images.standard_resolution.url}
+              key={imageData.caption.id}
+            />
+          );
         });
-        this.setState({loading: false, photos: photoData});
+      })
+      .then(() => {
+        this.setState({loaded: true, photos: photoData});
       })
       .catch(err => {
         throw err;
@@ -41,35 +41,29 @@ class Gallery extends React.Component {
   };
 
   render() {
-    if (this.props.loading) {
-      return <Loading />
-    }
     return (
-      <article>
-        <header className="section background-dark">
-          <div className="line">
-            <h1 className="text-white margin-top-bottom-40 text-size-60 text-line-height-1">
-              Photo Gallery
-            </h1>
-            <p className="margin-bottom-0 text-size-16">
-              Hello, thank you for viewing my photography.<br />
-              Click on any photo below and it will link you directly to my Instagram profile.
-            </p>
-          </div>
-        </header>
-        <div className="section background-white">
-          <div className="line">
-            <div className="margin">
-              {this.state.photos}
+      <main role="main">
+        <article>
+          <Header
+            title={this.state.title}
+            description={this.state.description}
+          />
+          <div className="section background-white">
+            <div className="line">
+              <div className="margin">
+                <Loader loaded={this.state.loaded}>
+                  {this.state.photos}
+                </Loader>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <a target="_blank" className="button center text-size-12" href="https://www.instagram.com/brucegraham/">
-            Click Here For More of My Instagram Photos
-          </a>
-        </div>
-      </article>
+          <div>
+            <a target="_blank" className="button center text-size-12" href="https://www.instagram.com/brucegraham/">
+              Click Here For More of My Instagram Photos
+            </a>
+          </div>
+        </article>
+      </main>
     );
   };
 };
